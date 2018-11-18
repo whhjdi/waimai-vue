@@ -1,29 +1,42 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <header-bar :seller="seller"></header-bar>
+    <div class="container">
+      <router-view>
+      </router-view>
+      <div class="tab">2</div>
+      <div class="content">3</div>
     </div>
-    <router-view/>
   </div>
 </template>
+<script>
+  import fetch from "./api/fetch.js";
+  import HeaderBar from "./components/HeaderBar";
+  export default {
+    data() {
+      return {
+        seller: {}
+      };
+    },
+    created() {
+      fetch("seller").then(res => {
+        console.log(res.data);
+        this.seller = JSON.parse(JSON.stringify(res.data))
+      });
+    },
+    components: {
+      HeaderBar
+    }
+  };
+</script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+    line-height:1;
+    font-weight:200;
   }
-}
 </style>

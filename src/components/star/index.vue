@@ -1,10 +1,14 @@
 <template>
   <div class="star" :class="starType">
-    <span v-for="(item,index) in itemList" :class="item" :key="index"></span>
+    <span v-for="(item,index) in itemList" :class="item" :key="index" class="star-item"></span>
   </div>
 </template>
 
 <script>
+const LENGTH = 5;
+const STAR_ON = 'on'
+const STAR_HALF = 'half'
+const STAR_OFF= 'off'
 export default {
   props:{
     size:{
@@ -16,7 +20,7 @@ export default {
     },
     score:{
       type:Number,
-      default:5,
+      default:0,
     }
   },
   computed:{
@@ -28,22 +32,26 @@ export default {
       let score = Math.floor(this.score*2)/2;
       let hasDecimal = score % 1 !=0;
       let integer = Math.floor(score)
+      console.log(integer);
+      
       for(let i =0;i<integer;i++){
-        result.push(score)
+        result.push(STAR_ON)
       }
       if(hasDecimal){
-        result.push()
+        result.push(STAR_HALF)
       }
-      while(result.length<5){
-        result.push
+      while(result.length<LENGTH){
+        result.push(STAR_OFF)
       }
+      console.log(result);
+      
       return result
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-  @import url("../../assets/css/mixin.scss");
+	@import "../../assets/css/mixin.scss";
   .star {
   	.star-item {
   		display: inline-block;
@@ -59,13 +67,13 @@ export default {
   				margin-right: 0;
   			}
   			&.on {
-  				@include bg-image("star48-on");
+  				@include bg-image("star48_on");
   			}
   			&.half {
-  				@include bg-image("star48-half");
+  				@include bg-image("star48_half");
   			}
   			&.off {
-  				@include bg-image("star48-off");
+  				@include bg-image("star48_off");
   			}
   		}
   	}
@@ -79,13 +87,13 @@ export default {
   				margin-right: 0;
   			}
   			&.on {
-  				@include bg-image("star36-on");
+  				@include bg-image("star36_on");
   			}
   			&.half {
-  				@include bg-image("star36-half");
+  				@include bg-image("star36_half");
   			}
   			&.off {
-  				@include bg-image("star36-off");
+  				@include bg-image("star36_off");
   			}
   		}
   	}
@@ -99,13 +107,13 @@ export default {
   				margin-right: 0;
   			}
   			&.on {
-  				@include bg-image("star24-on");
+  				@include bg-image("star24_on");
   			}
   			&.half {
-  				@include bg-image("star24-half");
+  				@include bg-image("star24_half");
   			}
   			&.off {
-  				@include bg-image("star24-off");
+  				@include bg-image("star24_off");
   			}
   		}
   	}

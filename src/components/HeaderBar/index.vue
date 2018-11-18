@@ -38,6 +38,10 @@
 				<div class="detail-wrapper clearfix">
 					<div class="detail-content">
 						<h1 class="title">{{seller.name}}</h1>
+						<div class="star-wrapper">
+							<Star :size="48" :score="seller.score"></Star>
+						</div>
+						
 					</div>
 				</div>
 				<div class="detail-close clearfix" @click="showDetail=false">
@@ -62,6 +66,7 @@
 	</div>
 </template>
 <script>
+import Star from '../star'
 	export default {
 	  props: {
 	    seller: {
@@ -73,7 +78,10 @@
 				classMap: ["decrease", "discount", "special", "guarantee", "invoice"],
 				showDetail:false
 	    };
-	  },
+		},
+		components:{
+			Star
+		},
 	  computed: {
 	    iconIndex() {
 	      let index = Math.floor(Math.random() * 10);
@@ -241,14 +249,17 @@
 				.detail-wrapper {
 					min-height: 100%;
 					.detail-content {
-						margin-top: 64px;
+						padding-top: 64px;
 						padding-bottom: 64px;
-						width:100%;
-						.title{
+						width: 100%;
+						.title {
 							font-size: 16px;
 							line-height: 16px;
-							font-weight:700px;
-							
+							font-weight: 700px;
+						}
+						.star-wrapper{
+							margin-top:18px;
+							padding:2px 0;
 						}
 					}
 				}

@@ -217,3 +217,9 @@ a {
     color: #25a4bb;
     text-decoration: none;
 }
+.clearfix::after{
+    content:'';
+    display: flex;
+    clear:both;
+    zoom: 1; /*兼容 IE*/
+}

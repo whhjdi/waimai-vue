@@ -37,6 +37,6 @@
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     line-height:1;
-    font-weight:200;
+    font-weight:400;
   }
 </style>

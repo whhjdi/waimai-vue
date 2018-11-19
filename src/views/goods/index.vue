@@ -2,11 +2,10 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul class="menu">
-        <li v-for="(item,index) in goods" :key="index" class="menu-item border-bottom" 
-        :class="{current:currentIndex===index}"
-        @click="handleClick(index,$event)">
-          <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
-          <span class="text">{{item.name}}</span>
+        <li v-for="(item,index) in goods" :key="index" class="menu-item border-bottom" :class="{current:currentIndex===index}" @click="handleClick(index,$event)">
+
+          <span class="text">
+            <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}</span>
         </li>
       </ul>
     </div>
@@ -36,11 +35,13 @@
         </li>
       </ul>
     </div>
+    <shop-cart></shop-cart>
   </div>
 </template>
 <script>
 import fetch from '../../api/fetch.js'
 import BScroll from 'better-scroll'
+import ShopCart from '../../components/ShopCart'
 export default {
   props:{
     seller:{
@@ -55,9 +56,11 @@ export default {
       scrollY:0,
     }
   },
+  components:{
+    ShopCart
+  },
   created(){
     fetch("goods").then(res => {
-        console.log(res.data);
         this.goods = JSON.parse(JSON.stringify(res.data))
         this.$nextTick(()=>{
           this.initScroll()
@@ -70,9 +73,6 @@ export default {
       for(let i = 0;i<this.heightList.length;i++){
         let height1  = this.heightList[i]
         let height2  = this.heightList[i+1]
-        console.log(height1);
-        console.log(height2);
-        console.log(this.scrollY);
         if(!height2 || (this.scrollY>=height1&&this.scrollY<height2)){
           return i
         }
@@ -118,7 +118,7 @@ export default {
   .goods {
   	position: absolute;
   	display: flex;
-  	top: 188px;
+  	top: 174px;
   	bottom: 46px;
   	width: 100%;
   	overflow: hidden;
@@ -132,10 +132,11 @@ export default {
   			.menu-item {
   				height: 54px;
   				padding: 0 12px;
-  				padding-top: 18px;
   				text-align: center;
   				box-sizing: border-box;
   				width: 100%;
+  				display: table;
+  				cursor: pointer;
   				&.current {
   					background: #fff;
   					.text {
@@ -145,13 +146,20 @@ export default {
   						line-height: 14px;
   					}
   				}
-  				.icon {
+  				
+  				.text {
+  					font-size: 12px;
+  					color: rgb(147, 153, 159);
+  					font-weight: 200;
+  					line-height: 12px;
+  					display: table-cell;
+            vertical-align: middle;
+            .icon {
   					display: inline-block;
-  					vertical-align: top;
+  					vertical-align: middle;
   					width: 12px;
   					height: 12px;
   					margin-right: 4px;
-  					background-color: #000;
   					background-size: 12px 12px;
   					background-repeat: no-repeat;
   					&.decrease {
@@ -170,11 +178,6 @@ export default {
   						@include bg-image("special_3");
   					}
   				}
-  				.text {
-  					font-size: 12px;
-  					color: rgb(147, 153, 159);
-  					font-weight: 200;
-  					line-height: 12px;
   				}
   			}
   		}

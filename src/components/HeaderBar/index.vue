@@ -34,34 +34,45 @@
 			<div class="background">
 				<img :src="seller.avatar" alt="">
 			</div>
-			<div class="detail" v-show="showDetail">
-				<div class="detail-wrapper clearfix">
-					<div class="detail-content">
-						<h1 class="title">{{seller.name}}</h1>
-						<div class="star-wrapper">
-							<Star :size="48" :score="seller.score"></Star>
+			<transition name="fade">
+				<div class="detail" v-show="showDetail">
+					<div class="detail-wrapper clearfix">
+						<div class="detail-content">
+							<h1 class="title">{{seller.name}}</h1>
+							<div class="star-wrapper">
+								<Star :size="48" :score="seller.score"></Star>
+							</div>
+							<div class="name-title">
+								<div class="line"></div>
+								<div class="text">优惠信息</div>
+								<div class="line"></div>
+							</div>
+							<ul v-if="seller.supports" class="support-list">
+								<li class="support-item" v-for="(item,index) in seller.supports" :key="index">
+									<span class="icon" :class="classMap[seller.supports[index].type]"></span>
+									<span class="text">{{seller.supports[index].description}}</span>
+								</li>
+							</ul>
+							<div class="name-title">
+								<div class="line"></div>
+								<div class="text">商家公告</div>
+								<div class="line"></div>
+							</div>
+							<div class="bulletin">
+								<p class="content">
+									{{seller.bulletin}}
+								</p>
+							</div>
 						</div>
-						
 					</div>
-				</div>
-				<div class="detail-close clearfix" @click="showDetail=false">
-					<svg class="icon" aria-hidden="true">
-						<use xlink:href="#icon-close"></use>
-					</svg>
-				</div>
+					<div class="detail-close clearfix" @click="showDetail=false">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-close"></use>
+						</svg>
+					</div>
 
-			</div>
-		</div>
-		<div class="tab border-bottom">
-			<router-link to="/goods" class="tab-item">
-				商品
-			</router-link>
-			<router-link to="/ratings" class="tab-item">
-				评价
-			</router-link>
-			<router-link to="/seller" class="tab-item">
-				商家
-			</router-link>
+				</div>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -244,6 +255,7 @@ import Star from '../star'
 				top: 0;
 				left: 0;
 				background: rgba(7, 17, 27, 0.8);
+				backdrop-filter: blur(10px);
 				overflow: auto;
 				text-align: center;
 				.detail-wrapper {
@@ -257,9 +269,72 @@ import Star from '../star'
 							line-height: 16px;
 							font-weight: 700px;
 						}
-						.star-wrapper{
-							margin-top:18px;
-							padding:2px 0;
+						.star-wrapper {
+							margin-top: 18px;
+							padding: 2px 0;
+						}
+						.name-title {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							margin: 28px 36px 24px 36px;
+							.line {
+								flex: 1;
+								border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+							}
+							.text {
+								margin: 0 12px;
+								font-size: 14px;
+								font-weight: 800;
+							}
+						}
+						.support-list {
+							width: 80%;
+							margin: 0 auto;
+							.support-item {
+								padding: 0 12px;
+								margin-bottom: 12px;
+								text-align: left;
+								&:last-child {
+									margin-bottom: 0;
+								}
+								.icon {
+									display: inline-block;
+									vertical-align: top;
+									width: 16px;
+									height: 16px;
+									margin-right: 6px;
+									background-color: #000;
+									background-size: 16px 16px;
+									background-repeat: no-repeat;
+									&.decrease {
+										@include bg-image("decrease_2");
+									}
+									&.discount {
+										@include bg-image("discount_2");
+									}
+									&.guarantee {
+										@include bg-image("guarantee_2");
+									}
+									&.invoice {
+										@include bg-image("invoice_2");
+									}
+									&.special {
+										@include bg-image("special_2");
+									}
+								}
+							}
+						}
+						.bulletin {
+							width: 80%;
+							margin: 0 auto;
+							padding: 24px 12px 0 12px;
+							.content {
+								text-align: left;
+								font-size: 12px;
+								font-weight: 200;
+								line-height: 24px;
+							}
 						}
 					}
 				}
@@ -272,20 +347,13 @@ import Star from '../star'
 				}
 			}
 		}
-		.tab {
-			display: flex;
-			width: 100%;
-			height: 40px;
-			line-height: 40px;
-			background: #fff;
-			.tab-item {
-				text-align: center;
-				flex: 1;
-				color: rgb(77, 85, 93);
-				&.router-link-active {
-					color: rgb(240, 20, 20);
-				}
-			}
-		}
+	}
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+		background: rgba(7, 17, 27, 0);
 	}
 </style>

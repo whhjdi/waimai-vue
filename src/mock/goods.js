@@ -7,7 +7,7 @@ export const goods = Mock.mock({
     {
       "name": "热销榜",
       "type": -1,
-      "foods|5-10": [
+      "foods": [
         {
           "name": "皮蛋瘦肉粥",
           "price": 10,
@@ -498,7 +498,7 @@ export const goods = Mock.mock({
     {
       "name": "爽口凉菜",
       "type": -1,
-      "foods|2-10": [
+      "foods": [
         {
           "name": "八宝酱菜",
           "price": 4,

@@ -36,5 +36,8 @@
   	color: #2c3e50;
   	line-height: 1;
   	font-weight: 400;
+    position: relative;
+    flex-direction: column;
+    height:100%;
   }
 </style>

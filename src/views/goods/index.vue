@@ -1,16 +1,18 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul class="menu">
-        <li v-for="(item,index) in goods" :key="index" class="menu-item border-bottom">
+        <li v-for="(item,index) in goods" :key="index" class="menu-item border-bottom" 
+        :class="{current:currentIndex===index}"
+        @click="handleClick(index,$event)">
           <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
           <span class="text">{{item.name}}</span>
         </li>
       </ul>
     </div>
-    <div class="content-wrapper">
+    <div class="content-wrapper" ref="contentWrapper">
       <ul class="goods-wrapper">
-        <li v-for="(item,index) in goods" class="food-list" :key="index">
+        <li v-for="(item,index) in goods" class="food-list" ref="foodList" :key="index">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="(food,index) in item.foods" :key="index" class="food-item border-bottom">
@@ -38,6 +40,7 @@
 </template>
 <script>
 import fetch from '../../api/fetch.js'
+import BScroll from 'better-scroll'
 export default {
   props:{
     seller:{
@@ -48,37 +51,100 @@ export default {
     return {
       goods:[],
       classMap: ["decrease", "discount", "special", "guarantee", "invoice"],
-
+      heightList:[],
+      scrollY:0,
     }
   },
   created(){
     fetch("goods").then(res => {
         console.log(res.data);
         this.goods = JSON.parse(JSON.stringify(res.data))
+        this.$nextTick(()=>{
+          this.initScroll()
+          this.getHeight()
+        })
       });
+  },
+  computed:{
+    currentIndex(){
+      for(let i = 0;i<this.heightList.length;i++){
+        let height1  = this.heightList[i]
+        let height2  = this.heightList[i+1]
+        console.log(height1);
+        console.log(height2);
+        console.log(this.scrollY);
+        if(!height2 || (this.scrollY>=height1&&this.scrollY<height2)){
+          return i
+        }
+      }
+      return 0;
+    }
+  },
+  methods:{
+    initScroll(){
+      this.menuScroll = new BScroll(this.$refs.menuWrapper,{
+        click:true
+      })
+      this.foodsScroll = new BScroll(this.$refs.contentWrapper,{
+        probeType:3
+      })
+      this.foodsScroll.on('scroll',(pos)=>{
+        this.scrollY = Math.abs(Math.round(pos.y))
+      })
+    },
+    getHeight(){
+      let foodList = this.$refs.foodList;
+      let height = 0;
+      this.heightList.push(height)
+      for(let i= 0;i<foodList.length;i++){
+        height += foodList[i].clientHeight
+        this.heightList.push(height)
+      }
+    },
+    handleClick(index,e){
+      if(!e._constructed){
+        return ;
+      }
+      let el = this.$refs.foodList[index];
+      console.log(el);
+      
+      this.foodsScroll.scrollToElement(el,300)
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
   @import "../../assets/css/mixin.scss";
   .goods {
-  	/* overflow: auto; */
+  	position: absolute;
   	display: flex;
+  	top: 188px;
+  	bottom: 46px;
   	width: 100%;
-  	height: calc(100vh - 174px);
+  	overflow: hidden;
   	.menu-wrapper {
   		width: 80px;
-  		height: 100%;
   		background: #f3f5f7;
   		.menu {
-  			height: 100%;
   			display: flex;
   			flex-direction: column;
   			align-items: center;
-  			padding: 0 12px;
   			.menu-item {
   				height: 54px;
-  				padding-top: 26px;
+  				padding: 0 12px;
+  				padding-top: 18px;
+  				text-align: center;
+  				box-sizing: border-box;
+  				width: 100%;
+  				&.current {
+  					background: #fff;
+  					.text {
+  						font-size: 12px;
+  						color: rgb(240, 20, 20);
+  						font-weight: bold;
+  						line-height: 14px;
+  					}
+  				}
   				.icon {
   					display: inline-block;
   					vertical-align: top;
@@ -106,9 +172,9 @@ export default {
   				}
   				.text {
   					font-size: 12px;
-  					color: rgb(240, 20, 20);
+  					color: rgb(147, 153, 159);
   					font-weight: 200;
-  					line-height: 14px;
+  					line-height: 12px;
   				}
   			}
   		}
@@ -172,7 +238,7 @@ export default {
   							font-weight: 700;
   							line-height: 24px;
   							margin-left: 8px;
-                text-decoration: line-through;
+  							text-decoration: line-through;
   						}
   					}
   				}

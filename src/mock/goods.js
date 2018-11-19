@@ -376,7 +376,7 @@ export const goods = Mock.mock({
       ]
     },
     {
-      "name": "冰爽饮品限时特惠",
+      "name": "饮品限时特惠",
       "type": 1,
       "foods": [
         {

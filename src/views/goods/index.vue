@@ -29,19 +29,24 @@
                   <span>￥{{food.price}}</span>
                   <span v-show="food.oldPrice" class="old-price">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cart-button-wrapper">
+                  <cart-button :food="food"></cart-button>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shop-cart></shop-cart>
+    <shop-cart :delivery-price="seller.deliveryPrice" 
+    :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 <script>
 import fetch from '../../api/fetch.js'
 import BScroll from 'better-scroll'
 import ShopCart from '../../components/ShopCart'
+import CartButton from '../../components/CartButton'
 export default {
   props:{
     seller:{
@@ -57,7 +62,8 @@ export default {
     }
   },
   components:{
-    ShopCart
+    ShopCart,
+    CartButton
   },
   created(){
     fetch("goods").then(res => {
@@ -106,8 +112,6 @@ export default {
         return ;
       }
       let el = this.$refs.foodList[index];
-      console.log(el);
-      
       this.foodsScroll.scrollToElement(el,300)
     }
   }
@@ -200,7 +204,8 @@ export default {
   				padding: 18px 0;
   				margin: 0 18px;
   				display: flex;
-  				flex-direction: row;
+          flex-direction: row;
+          position: relative;
   				.img-icon {
   					margin-right: 10px;
   					& > img {
@@ -243,7 +248,12 @@ export default {
   							margin-left: 8px;
   							text-decoration: line-through;
   						}
-  					}
+            }
+            .cart-button-wrapper{
+              position: absolute;
+              right:0;
+              bottom:18px;
+            }
   				}
   			}
   		}

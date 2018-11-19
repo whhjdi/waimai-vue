@@ -4,8 +4,8 @@ export const seller = Mock.mock({
   "status": 200,
   "message": "ok",
   "data":  {
-      "name": "粥品香坊（回龙观）",
-      "description": "蜂鸟专送",
+      "name": "沐雪吃货宅急送",
+      "description": "沐雪专送",
       "deliveryTime": 38,
       "score": 4.2,
       "serviceScore": 4.1,

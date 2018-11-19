@@ -3,21 +3,78 @@
     <div class="wrapper">
       <div class="content-left">
         <div class="logo-wrapper">
-          <div class="logo">
+          <div class="logo" :class="{highlight:totalCount>0}">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-shopping_cart"></use>
             </svg>
           </div>
+          <div class="num" v-show="totalCount">{{totalCount}}</div>
         </div>
-        <div class="price border-right">
-          ￥0元
+        <div class="price border-right" :class="{highlight:totalPrice>0}">
+          ￥{{totalPrice}}元
         </div>
-        <div class="desc">另需配送费4元</div>
+        <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
-      <div class="content-right">2</div>
+      <div class="content-right">
+        <div class="pay" :class="{highlight:totalPrice>=minPrice}">
+          {{payDesc}}
+        </div>
+      </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  props:{
+    deliveryPrice:{
+      type:Number,
+      default:6,
+    },
+    minPrice:{
+      type:Number,
+      default:0,
+    },
+    selectFoods:{
+      type:Array,
+      default:()=>{
+        return [{price:11,count:3}]
+      }
+    }
+  },
+  data () {
+    return {
+
+    }
+  },
+  computed:{
+    totalPrice(){
+      let total = 0;
+      this.selectFoods.forEach(item=>{
+        total += item.price*item.count
+      })
+      return total
+    },
+    totalCount(){
+      let count = 0;
+      this.selectFoods.forEach(item=>{
+        count = item.count
+      })
+      return count
+    },
+    payDesc(){
+      if(this.totalPrice===0){
+        return `满￥20元起送`
+      }else if(this.totalPrice<this.minPrice){
+        return `还差￥${this.minPrice-this.totalPrice}起送`
+      }else{
+        return `合计￥${this.totalPrice+this.deliveryPrice}`
+
+        }
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
   .shop-cart {
   	position: fixed;
@@ -35,7 +92,7 @@
   			flex: 1;
   			font-size: 0;
   			.logo-wrapper {
-          display: inline-block;
+  				display: inline-block;
   				position: relative;
   				top: -10px;
   				margin: 0 18px;
@@ -51,40 +108,77 @@
   					border-radius: 50%;
   					background: #2c3e51;
   					text-align: center;
+  					&.highlight {
+  						background: rgb(0, 160, 220);
+  						.icon {
+  							color: #fff;
+  						}
+  					}
   					.icon {
   						color: #80858a;
   						font-size: 24px;
-              line-height: 44px;
-              padding:10px 0;
+  						line-height: 44px;
+  						padding: 10px 0;
   					}
+  				}
+  				.num {
+  					position: absolute;
+  					top: 0;
+  					right: 0;
+  					width: 24px;
+  					height: 16px;
+  					line-height: 16px;
+  					text-align: center;
+  					border-radius: 16px;
+  					font-size: 9px;
+  					font-weight: 700;
+  					color: #fff;
+  					background: #f01315;
+  					box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
   				}
   			}
   			.price {
-          display: inline-block;
-          vertical-align: top;
-          box-sizing: border-box;
-          line-height: 24px;
-          margin-top:12px;
-          padding-right:12px;
-          color:rgba(255,255,255,0.4);
-          font-size: 16px;
-          &.border-right{
-            border-width: 102px;
-            border-color:rgba(255,255,255,0.4)
-          }
+  				display: inline-block;
+  				vertical-align: top;
+  				box-sizing: border-box;
+  				line-height: 24px;
+  				margin-top: 12px;
+  				padding-right: 12px;
+  				color: rgba(255, 255, 255, 0.4);
+  				font-size: 16px;
+  				&.highlight {
+  					color: #fff;
+  				}
+  				&.border-right {
+  					border-width: 102px;
+  					border-color: rgba(255, 255, 255, 0.4);
+  				}
   			}
   			.desc {
-          display: inline-block;
-          vertical-align: top;
-          line-height: 24px;
-          margin:12px;
-          font-size: 10px;
-          color:rgba(255,255,255,0.4);
+  				display: inline-block;
+  				vertical-align: top;
+  				line-height: 24px;
+  				margin: 12px;
+  				font-size: 10px;
+  				color: rgba(255, 255, 255, 0.4);
   			}
   		}
   		.content-right {
   			flex: 0 0 105px;
   			width: 105px;
+  			.pay {
+  				padding: 0 8px;
+  				line-height: 48px;
+  				height: 48px;
+  				text-align: center;
+  				background: #2b333b;
+  				font-size: 12px;
+  				color: rgba(255, 255, 255, 0.4);
+  				&.highlight {
+  					color: #fff;
+  					background: green;
+  				}
+  			}
   		}
   	}
   }

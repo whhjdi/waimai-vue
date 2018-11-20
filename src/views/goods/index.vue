@@ -104,7 +104,6 @@
 		},
 		methods: {
 			closeDetail() {
-				console.log(1);
 				this.showDetail = false;
 			},
 			clickFood(food) {
@@ -112,8 +111,6 @@
 				this.showDetail = true;
 			},
 			initScroll() {
-				console.log(this.$refs.menuWrapper);
-				
 				this.menuScroll = new BScroll(this.$refs.menuWrapper, {
 					click: true
 				});
@@ -139,7 +136,6 @@
 				this.foodsScroll.scrollToElement(el, 300);
 			},
 			addCart(target) {
-				console.log(target);
 				this.$nextTick(() => {
 					this.$refs.shopCart.drop(target);
 				});

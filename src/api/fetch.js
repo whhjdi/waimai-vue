@@ -8,8 +8,8 @@ function fetch(api,data){
     axios.post(url[api],data).then(res=>{
       resolve(res.data)
     }).catch(err=>{
-      //reject(err)
-      console.log(err);
+      // //reject(err)
+      // console.log(err);
       resolve(mock[api])
     })
   })

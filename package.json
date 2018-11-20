@@ -12,7 +12,6 @@
     "better-scroll": "^1.13.2",
     "cssnano": "^4.1.7",
     "cssnano-preset-advanced": "^4.0.5",
-    "fastclick": "^1.0.6",
     "mockjs": "^1.0.1-beta3",
     "normalize.css": "^8.0.1",
     "postcss-aspect-ratio-mini": "^0.0.2",

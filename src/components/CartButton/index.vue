@@ -1,12 +1,14 @@
 <template>
   <div class="cart-button">
-    <div class="cart-minus" v-show="food.count" @click="minusCount">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-remove_circle_outlin"></use>
-      </svg>
-    </div>
+    <transition name="slide">
+      <div class="cart-minus" v-show="food.count" @click="minusCount">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-remove_circle_outlin"></use>
+        </svg>
+      </div>
+    </transition>
     <div class="cart-count" v-show="food.count">{{food.count}}</div>
-    <div class="cart-add" @click="addCount">
+    <div class="cart-add" @click="addCount($event)">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-add_circle"></use>
       </svg>
@@ -14,28 +16,31 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
-export default {
-  props:{
-    food:{
-      type:Object
-    }
-  },
-  methods:{
-    addCount(){
-      if (!this.food.count) {
-          Vue.set(this.food, "count", 1)
-        } else {
-          this.food.count++;
-          
-        }
-      console.log(this.food.count);
-    },
-    minusCount(){
-      this.food.count--;    
-    }
-  },
-  }
+  import Vue from "vue";
+  export default {
+  	props: {
+  		food: {
+  			type: Object
+  		}
+  	},
+  	methods: {
+  		addCount(e) {
+  			if (!this.food.count) {
+  				Vue.set(this.food, "count", 1);
+  			} else {
+  				this.food.count += 1;
+  			}
+  			this.$emit("add",e.target);
+  		},
+  		minusCount() {
+  			if (this.food.count > 0) {
+  				this.food.count -= 1;
+  			} else {
+  				this.food.count = 0;
+  			}
+  		}
+  	}
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -60,6 +65,32 @@ export default {
   		padding: 6px;
   		font-size: 24px;
   		line-height: 24px;
+  	}
+  }
+  /* .slide-enter-active,
+        .slide-leave-active {
+        	transition: all .5s linear;
+        }
+        .slide-enter,
+        .slide-leave-to {
+          opacity: 0.2;
+        	transform: translate3D(20px,10px,0) rotate(180deg);
+        } */
+  .slide-enter-active {
+  	animation: slide-in 0.5s linear;
+  }
+  .slide-leave-active {
+  	animation: slide-in 0.5s linear reverse;
+  }
+  @keyframes slide-in {
+  	0% {
+  		transform: translate(30px, 0) rotate(0deg);
+  	}
+  	50% {
+  		transform: translate(10px, -20px) rotate(180deg);
+  	}
+  	100% {
+  		transform: translate(0, 0) rotate(360deg);
   	}
   }
 </style>

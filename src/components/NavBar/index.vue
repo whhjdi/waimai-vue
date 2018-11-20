@@ -1,6 +1,6 @@
 <template>
   <div class="tab border-bottom">
-    <router-link to="/goods" class="tab-item">
+    <router-link to="goods" class="tab-item">
       商品
     </router-link>
     <router-link to="/ratings" class="tab-item">

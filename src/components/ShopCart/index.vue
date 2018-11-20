@@ -161,13 +161,15 @@
 		},
 		computed: {
 			showList: {
-				get(){
-					return this.showCart
+				get() {
+					if (!this.totalCount) {  
+              return false  
+            }  
+            return this.showCart 
 				},
-				set(){
+				set() {
 					if (!this.totalCount) {
 						this.showCart = true;
-						return false;
 					}
 					let show = !this.showCart;
 					if (show) {
@@ -181,6 +183,21 @@
 					}
 					return show;
 				}
+				// if (!this.totalCount) {
+				//   this.showCart = true;
+				//   return false;
+				// }
+				// let show = !this.showCart;
+				// if (show) {
+				//   this.$nextTick(() => {
+				//     if (!this.cartScroll) {
+				//       this.initScroll()
+				//     } else {
+				//       this.cartScroll.refresh();
+				//     }
+				//   });
+				// }
+				// return show;
 			},
 			totalPrice() {
 				let total = 0;

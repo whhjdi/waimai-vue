@@ -45,6 +45,7 @@
 	import BScroll from "better-scroll";
 	import ShopCart from "../../components/ShopCart";
 	import CartButton from "../../components/CartButton";
+		import FoodDetail from "../../components/FoodDetail";
 	export default {
 		props: {
 			seller: {
@@ -61,7 +62,8 @@
 		},
 		components: {
 			ShopCart,
-			CartButton
+			CartButton,
+			FoodDetail
 		},
 		created() {
 			fetch("goods").then(res => {

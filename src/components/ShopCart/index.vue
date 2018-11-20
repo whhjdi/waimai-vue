@@ -142,18 +142,20 @@
 				}
 			},
 			enter(el, done) {
-				this.$nextTick(() => {
-					el.style.transform = "translate(0,0)";
-					let inner = el.getElementsByClassName("inner-hook")[0];
-					inner.style.transform = `translate(0,0)`;
-					el.addEventListener("transitionend", done);
-				});
+				setTimeout(() => {
+					this.$nextTick(() => {
+						el.style.transform = "translate(0,0)";
+						let inner = el.getElementsByClassName("inner-hook")[0];
+						inner.style.transform = `translate(0,0)`;
+						el.addEventListener("transitionend", done);
+					});
+				}, 0);
 			},
 			afterEnter: function(el) {
 				let ball = this.dropBalls.shift();
 				if (ball) {
-					ball.show = false;
 					el.style.display = "none";
+					ball.show = false;
 				}
 			}
 		},
@@ -166,10 +168,10 @@
 				let show = !this.showCart;
 				if (show) {
 					this.$nextTick(() => {
-						if(!this.cartScroll){
+						if (!this.cartScroll) {
 							this.initScroll();
-						}else{
-							this.cartScroll.refresh()
+						} else {
+							this.cartScroll.refresh();
 						}
 					});
 				}
@@ -353,7 +355,6 @@
 				padding: 0 18px 20px 18px;
 				max-height: 220px;
 				overflow: hidden;
-				transition:all 3s ease;
 				.item {
 					display: flex;
 					align-items: center;

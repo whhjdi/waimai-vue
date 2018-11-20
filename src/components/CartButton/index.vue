@@ -1,14 +1,14 @@
 <template>
   <div class="cart-button">
     <transition name="slide">
-      <div class="cart-minus" v-show="food.count" @click="minusCount">
+      <div class="cart-minus" v-show="food.count" @click.stop.prevent="minusCount">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-remove_circle_outlin"></use>
         </svg>
       </div>
     </transition>
     <div class="cart-count" v-show="food.count">{{food.count}}</div>
-    <div class="cart-add" @click="addCount($event)">
+    <div class="cart-add" @click.stop.prevent="addCount">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-add_circle"></use>
       </svg>
@@ -68,15 +68,6 @@
   		line-height: 24px;
   	}
   }
-  /* .slide-enter-active,
-        .slide-leave-active {
-        	transition: all .5s linear;
-        }
-        .slide-enter,
-        .slide-leave-to {
-          opacity: 0.2;
-        	transform: translate3D(20px,10px,0) rotate(180deg);
-        } */
   .slide-enter-active {
   	animation: slide-in 0.5s linear;
   }

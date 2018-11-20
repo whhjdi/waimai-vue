@@ -96,7 +96,6 @@ import Star from '../star'
 	  computed: {
 	    iconIndex() {
 	      let index = Math.floor(Math.random() * 10);
-	      console.log(index);
 	      if (index >= 0 && index <= 4) {
 	        return index;
 	      }

@@ -13,7 +13,7 @@
 				<li v-for="(item,index) in goods" class="food-list" ref="foodList" :key="index">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li v-for="(food,index) in item.foods" :key="index" class="food-item border-bottom">
+						<li v-for="(food,index) in item.foods" :key="index" class="food-item border-bottom" @click="clickFood(food,$event)">
 							<div class="img-icon">
 								<img :src="food.icon" alt="">
 							</div>
@@ -37,6 +37,8 @@
 				</li>
 			</ul>
 		</div>
+		<food-detail :food="selectedFood" :show-detail="showDetail" @close="closeDetail" ref="foodDetail"
+		@add="addCart"></food-detail>
 		<shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selected-foods="selectedFoods" ref="shopCart"></shop-cart>
 	</div>
 </template>
@@ -45,7 +47,7 @@
 	import BScroll from "better-scroll";
 	import ShopCart from "../../components/ShopCart";
 	import CartButton from "../../components/CartButton";
-		import FoodDetail from "../../components/FoodDetail";
+	import FoodDetail from "../../components/FoodDetail";
 	export default {
 		props: {
 			seller: {
@@ -57,7 +59,9 @@
 				goods: [],
 				classMap: ["decrease", "discount", "special", "guarantee", "invoice"],
 				heightList: [],
-				scrollY: 0
+				scrollY: 0,
+				showDetail: false,
+				selectedFood: {}
 			};
 		},
 		components: {
@@ -98,7 +102,17 @@
 			}
 		},
 		methods: {
+			closeDetail() {
+				console.log(1);
+				this.showDetail = false;
+			},
+			clickFood(food) {
+				this.selectedFood = food;
+				this.showDetail = true;
+			},
 			initScroll() {
+				console.log(this.$refs.menuWrapper);
+				
 				this.menuScroll = new BScroll(this.$refs.menuWrapper, {
 					click: true
 				});
@@ -124,6 +138,7 @@
 				this.foodsScroll.scrollToElement(el, 300);
 			},
 			addCart(target) {
+				console.log(target);
 				this.$nextTick(() => {
 					this.$refs.shopCart.drop(target);
 				});

@@ -101,8 +101,8 @@
 			cartButton
 		},
 		methods: {
-			addCart(target){
-				this.$emit('add',target)
+			addCart(target) {
+				this.$emit("add", target);
 			},
 			pay() {
 				if (this.totalPrice < this.minPrice) return;
@@ -162,29 +162,27 @@
 				}
 			}
 		},
+		created() {
+			this.$nextTick(() => {
+				if (!this.cartScroll) {
+					this.initScroll();
+				} else {
+					this.cartScroll.refresh();
+				}
+			});
+		},
 		computed: {
 			showList: {
 				get() {
-					if (!this.totalCount) {  
-              return false  
-            }  
-            return this.showCart 
+					if (!this.totalCount) {
+						return false;
+					}
+					return this.showCart;
 				},
 				set() {
 					if (!this.totalCount) {
 						this.showCart = true;
 					}
-					let show = !this.showCart;
-					if (show) {
-						this.$nextTick(() => {
-							if (!this.cartScroll) {
-								this.initScroll();
-							} else {
-								this.cartScroll.refresh();
-							}
-						});
-					}
-					return show;
 				}
 			},
 			totalPrice() {

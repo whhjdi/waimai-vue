@@ -101,7 +101,8 @@
 					click: true
 				});
 				this.foodsScroll = new BScroll(this.$refs.contentWrapper, {
-					probeType: 3
+					probeType: 3,
+					click: true
 				});
 				this.foodsScroll.on("scroll", pos => {
 					this.scrollY = Math.abs(Math.round(pos.y));

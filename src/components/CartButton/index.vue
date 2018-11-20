@@ -22,7 +22,7 @@
   		food: {
   			type: Object
   		}
-  	},
+    },
   	methods: {
   		addCount(e) {
   			if (!this.food.count) {
@@ -46,6 +46,7 @@
 <style lang="scss" scoped>
   .cart-button {
   	font-size: 0;
+    color: #02A0DC;
   	.cart-minus {
   		display: inline-block;
   		padding: 6px;

@@ -1,7 +1,7 @@
 <template>
 	<div class="shop-cart">
 		<div class="wrapper">
-			<div class="content-left">
+			<div class="content-left" @click="showCart=!showCart">
 				<div class="logo-wrapper">
 					<div class="logo" :class="{highlight:totalCount>0}">
 						<svg class="icon" aria-hidden="true">
@@ -15,7 +15,7 @@
 				</div>
 				<div class="desc">另需配送费￥{{deliveryPrice}}元</div>
 			</div>
-			<div class="content-right">
+			<div class="content-right" @click="pay">
 				<div class="pay" :class="{highlight:totalPrice>=minPrice}">
 					{{payDesc}}
 				</div>
@@ -28,12 +28,34 @@
 						<div class="inner inner-hook"></div>
 					</div>
 				</transition>
-
 			</div>
 		</div>
+		<transition name="fold">
+			<div class="cart-list" v-show="showList">
+				<div class="cart-header">
+					<h1 class="title">购物车</h1>
+					<div class="empty" @click="empty">清空</div>
+				</div>
+				<div class="cart-content" ref="cartContent">
+					<ul>
+						<li v-for="(food,index) in selectedFoods" :key="index" class="item border-bottom">
+							<span class="name">{{food.name}}</span>
+							<div class="right">
+								<div class="price">￥{{food.price*food.count}}</div>
+								<div class="edit-wrapper">
+									<cart-button :food="food"></cart-button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 <script>
+	import cartButton from "../../components/CartButton";
+	import BScroll from "better-scroll";
 	export default {
 		props: {
 			deliveryPrice: {
@@ -53,6 +75,7 @@
 		},
 		data() {
 			return {
+				showCart: false,
 				balls: [
 					{
 						show: false
@@ -74,7 +97,24 @@
 				dropBalls: []
 			};
 		},
+		components: {
+			cartButton
+		},
 		methods: {
+			pay() {
+				if (this.totalPrice < this.minPrice) return;
+				alert("别点了，没饭吃的");
+			},
+			empty() {
+				this.selectedFoods.forEach(item => {
+					item.count = 0;
+				});
+			},
+			initScroll() {
+				this.cartScroll = new BScroll(this.$refs.cartContent, {
+					click: true
+				});
+			},
 			drop(el) {
 				for (let i = 0; i < this.balls.length; i++) {
 					let ball = this.balls[i];
@@ -118,6 +158,23 @@
 			}
 		},
 		computed: {
+			showList() {
+				if (!this.totalCount) {
+					this.showCart = true;
+					return false;
+				}
+				let show = !this.showCart;
+				if (show) {
+					this.$nextTick(() => {
+						if(!this.cartScroll){
+							this.initScroll();
+						}else{
+							this.cartScroll.refresh()
+						}
+					});
+				}
+				return show;
+			},
 			totalPrice() {
 				let total = 0;
 				this.selectedFoods.forEach(item => {
@@ -258,7 +315,7 @@
 				bottom: 22px;
 				z-index: 9999;
 				border-radius: 50%;
-				transition: all 0.4s cubic-bezier(.32,-0.45,.62,.9);
+				transition: all 0.4s cubic-bezier(0.32, -0.45, 0.62, 0.9);
 				.inner {
 					width: 16px;
 					height: 16px;
@@ -268,5 +325,67 @@
 				}
 			}
 		}
+		.cart-list {
+			position: absolute;
+			bottom: 48px;
+			width: 100%;
+			background: #fff;
+			z-index: -1;
+			.cart-header {
+				padding: 0 18px;
+				height: 40px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				background: #f3f5f7;
+				.title {
+					font-size: 14px;
+					font-weight: 200;
+					color: rgb(7, 17, 27);
+					line-height: 40px;
+				}
+				.empty {
+					font-size: 12px;
+					color: rgb(0, 160, 220);
+				}
+			}
+			.cart-content {
+				padding: 0 18px 20px 18px;
+				max-height: 220px;
+				overflow: hidden;
+				transition:all 3s ease;
+				.item {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 12px 0;
+					.name {
+						font-size: 14px;
+						color: rgb(7, 17, 27);
+						line-height: 24px;
+					}
+					.right {
+						display: flex;
+						align-items: center;
+						.price {
+							display: inline-block;
+							font-size: 14px;
+							color: rgb(240, 20, 20);
+							line-height: 24px;
+							margin-right: 12px;
+						}
+					}
+				}
+			}
+		}
+	}
+	.fold-enter-active,
+	.fold-leave-active {
+		transition: all 0.5s ease;
+	}
+	.fold-enter,
+	.fold-leave-to {
+		transform: translateY(100%);
+		opacity: 0;
 	}
 </style>

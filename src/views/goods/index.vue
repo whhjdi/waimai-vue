@@ -39,7 +39,8 @@
 		</div>
 		<food-detail :food="selectedFood" :show-detail="showDetail" @close="closeDetail" ref="foodDetail"
 		@add="addCart"></food-detail>
-		<shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selected-foods="selectedFoods" ref="shopCart"></shop-cart>
+		<shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selected-foods="selectedFoods" ref="shopCart"
+		@add="addCart"></shop-cart>
 	</div>
 </template>
 <script>

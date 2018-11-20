@@ -43,7 +43,7 @@
 							<div class="right">
 								<div class="price">￥{{food.price*food.count}}</div>
 								<div class="edit-wrapper">
-									<cart-button :food="food"></cart-button>
+									<cart-button :food="food" @add="addCart"></cart-button>
 								</div>
 							</div>
 						</li>
@@ -101,6 +101,9 @@
 			cartButton
 		},
 		methods: {
+			addCart(target){
+				this.$emit('add',target)
+			},
 			pay() {
 				if (this.totalPrice < this.minPrice) return;
 				alert("别点了，没饭吃的");
@@ -183,21 +186,6 @@
 					}
 					return show;
 				}
-				// if (!this.totalCount) {
-				//   this.showCart = true;
-				//   return false;
-				// }
-				// let show = !this.showCart;
-				// if (show) {
-				//   this.$nextTick(() => {
-				//     if (!this.cartScroll) {
-				//       this.initScroll()
-				//     } else {
-				//       this.cartScroll.refresh();
-				//     }
-				//   });
-				// }
-				// return show;
 			},
 			totalPrice() {
 				let total = 0;

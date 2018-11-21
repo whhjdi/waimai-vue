@@ -1,6 +1,5 @@
 module.exports = {
   plugins: {
-    autoprefixer: {},
     "postcss-import": {},
     "postcss-url": {},
     "postcss-aspect-ratio-mini": {},

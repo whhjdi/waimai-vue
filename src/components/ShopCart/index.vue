@@ -323,7 +323,7 @@
 				position: fixed;
 				left: 32px;
 				bottom: 22px;
-				z-index: 9999;
+				/* z-index: 999; */
 				border-radius: 50%;
 				transition: all 0.4s cubic-bezier(0.32, -0.45, 0.62, 0.9);
 				.inner {

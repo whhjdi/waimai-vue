@@ -25,7 +25,9 @@
         </div>
       </div>
       <div class="content">
-        <rating-select :onlyContent="onlyContent" :selectType='selectType' :ratings="ratings"></rating-select>
+        <rating-select :select-type="selectType" 
+        :desc="desc" :ratings="ratings" :only-content="onlyContent" @changeSelectType="changeSelectType" @contentToggle="contentToggle"></rating-select>
+
         <div class="content-wrapper">
           <ul>
             <li v-for="(rating,index) in ratings" v-show="showList(rating.rateType,rating.text)" :key="index" class="rating-list border-bottom">
@@ -78,10 +80,25 @@
   	},
   	data() {
   		return {
-  			ratings: []
+  			ratings: [],
+  			selectType: ALL,
+  			onlyContent: true,
+  			desc: {
+  				all: "全部",
+  				positive: "满意",
+  				negative: "吐槽"
+  			}
   		};
   	},
   	methods: {
+  		contentToggle() {
+  			console.log(1);
+  			this.onlyContent = !this.onlyContent;
+  		},
+  		changeSelectType(type) {
+  			console.log(33);
+  			this.selectType = type;
+  		},
   		showList(type, text) {
   			if (this.onlyContent && !text) {
   				return false;
@@ -91,15 +108,9 @@
   			} else {
   				return type === this.selectType;
   			}
-      },
-      addCart(target) {
-				this.$nextTick(() => {
-					this.$refs.shopCart.drop(target);
-				});
-			}
+  		}
   	},
   	created() {
-  		this.showFlag = true;
   		this.selectType = ALL;
   		this.onlyContent = true;
   		fetch("ratings").then(res => {
@@ -128,7 +139,7 @@
   	position: absolute;
   	top: 174px;
   	left: 0;
-    bottom: 0;
+  	bottom: 0;
   	overflow: hidden;
   	background: #f3f5f7;
   	.ratings-content {

@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: '/waimai/dist/'
+  baseUrl: '/waimai-vue/dist/'
 }

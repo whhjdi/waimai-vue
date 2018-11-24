@@ -125,7 +125,6 @@ export default {
     contentToggle() {
       this.onlyContent = !this.onlyContent;
 	    this.$nextTick(()=>{
-		    console.log(1);
 		    this.detailScroll.refresh();
 	    })
     },
@@ -143,7 +142,6 @@ export default {
   filters: {
   	filterDate(time) {
   		let date = new Date(time);
-		  console.log(date);
 		  return formatDate(date, "yyyy-MM-dd hh:mm");
   	}
   }

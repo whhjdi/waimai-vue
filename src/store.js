@@ -21,7 +21,6 @@ export default new Vuex.Store({
         }
       }
       seller[id][key] = value
-      console.log(seller);
       window.localStorage.setItem('__seller__', JSON.stringify(seller))
       state.sellerFavorite = seller[id][key]
     },

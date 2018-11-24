@@ -130,7 +130,6 @@
             click: true,
             eventPassthrough: 'vertical'
   				});
-  				console.log(2);
   			} else {
   				this.picScroll.refresh();
   			}

@@ -3,7 +3,6 @@ export function urlParse() {
   let obj = {}
   let reg = /[?&][^?&]+=[^?&]+/g
   let arr = url.match(reg)
-  console.log(arr);
   
   if (arr) {
     arr.forEach(item => {
@@ -13,7 +12,5 @@ export function urlParse() {
       obj[key] = value
     })
   }
-  console.log(obj);
-  
   return obj
 }

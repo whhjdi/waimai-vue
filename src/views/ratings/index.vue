@@ -92,11 +92,9 @@
   	},
   	methods: {
   		contentToggle() {
-  			console.log(1);
   			this.onlyContent = !this.onlyContent;
   		},
   		changeSelectType(type) {
-  			console.log(33);
   			this.selectType = type;
   		},
   		showList(type, text) {

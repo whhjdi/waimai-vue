@@ -147,9 +147,10 @@
 	@import "../../assets/css/mixin.scss";
 	.goods {
 		position: absolute;
-		display: flex;
+		display: flex; 
 		top: 174px;
-		bottom: 46px;
+		bottom: 46px; 
+		left:0;
 		width: 100%;
 		overflow: hidden;
 		.menu-wrapper {

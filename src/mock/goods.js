@@ -16,7 +16,7 @@ export const goods = Mock.mock({
           "sellCount": 229,
           "rating": 100,
           "info": "一碗皮蛋瘦肉粥，总是我到粥店时的不二之选。香浓软滑，饱腹暖心，皮蛋的Q弹与瘦肉的滑嫩伴着粥香溢于满口，让人喝这样的一碗粥也觉得心满意足",
-          "ratings|2-3": [
+          "ratings": [
             {
               "username": "3******c",
               "rateTime": 1469281964000,

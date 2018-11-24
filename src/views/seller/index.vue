@@ -31,6 +31,14 @@
             </div>
           </li>
         </ul>
+        <div class="favorite" @click="toggleFavorite">
+          <svg class="icon" aria-hidden="true" :class="{active:favorite}">
+            <use xlink:href="#icon-favorite"></use>
+          </svg>
+          <div class="text">
+            {{favoriteText}}
+          </div>
+        </div>
       </div>
       <div class="bulletin">
         <h1 class="title">公告与活动</h1>
@@ -56,8 +64,8 @@
       </div>
       <div class="desc">
         <h1 class="title">商家信息</h1>
-        <ul>
-          <li v-for="(info,index) in seller.infos" :key="index">{{info}}</li>
+        <ul class="desc-wrapper">
+          <li v-for="(info,index) in seller.infos" class="desc-item border-top" :key="index">{{info}}</li>
         </ul>
       </div>
     </div>
@@ -74,13 +82,25 @@
   	},
   	data() {
   		return {
+  			favorite: false,
   			classMap: ["decrease", "discount", "special", "guarantee", "invoice"]
   		};
+  	},
+  	computed: {
+  		favoriteText() {
+  			return this.favorite ? "已收藏" : "收 藏";
+  		}
   	},
   	components: {
   		Star
   	},
   	created() {
+  		this.$store.commit("loadFromLocal", {
+  			id: this.seller.id,
+  			key: "favorite",
+  			value: this.favorite
+  		});
+  		this.favorite = this.$store.state.sellerFavorite;
   		this.$nextTick(() => {
   			if (!this.sellerScroll) {
   				this.sellerScroll = new BScroll(this.$refs.seller, {
@@ -94,17 +114,24 @@
   			let width = (picWidth + margin) * this.seller.pics.length - margin;
   			this.$refs.picList.style.width = width + "px";
   			if (!this.picScroll) {
-          console.log(1);
-          
   				this.picScroll = new BScroll(this.$refs.picWrapper, {
   					click: true
-          });
-          console.log(2);
-          
+  				});
+  				console.log(2);
   			} else {
   				this.picScroll.refresh();
   			}
   		});
+  	},
+  	methods: {
+  		toggleFavorite() {
+  			this.favorite = !this.favorite;
+  			this.$store.commit("saveToLocal", {
+  				id: this.seller.id,
+  				key: "favorite",
+  				value: this.favorite
+  			});
+  		}
   	}
   };
 </script>
@@ -123,6 +150,7 @@
   			background: #fff;
   			padding: 18px;
   			margin-bottom: 18px;
+  			position: relative;
   			.title {
   				font-size: 14px;
   				color: rgb(7, 17, 27);
@@ -168,6 +196,27 @@
   						color: rgb(7, 17, 27);
   						line-height: 18px;
   					}
+  				}
+  			}
+  			.favorite {
+  				position: absolute;
+  				right: 10px;
+  				top: 18px;
+  				text-align: center;
+  				width: 50px;
+  				.icon {
+  					margin-bottom: 4px;
+  					font-size: 24px;
+  					line-height: 24px;
+  					color: rgb(77, 85, 93);
+  					&.active {
+  						color: rgb(240, 20, 20);
+  					}
+  				}
+  				.text {
+  					font-size: 10px;
+  					line-height: 10px;
+  					color: rgb(77, 85, 93);
   				}
   			}
   		}
@@ -243,6 +292,25 @@
   				.pic-item {
   					display: inline-block;
   					margin-right: 6px;
+  				}
+  			}
+  		}
+  		.desc {
+  			padding: 18px;
+  			background: #fff;
+  			.title {
+  				font-size: 14px;
+  				color: rgb(7, 17, 27);
+  				line-height: 14px;
+  				margin-bottom: 12px;
+  			}
+  			.desc-wrapper {
+  				.desc-item {
+  					padding: 16px 12px;
+  					font-size: 12px;
+  					color: rgb(7, 17, 27);
+  					line-height: 16px;
+  					font-weight: 200;
   				}
   			}
   		}

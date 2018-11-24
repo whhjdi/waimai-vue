@@ -88,7 +88,7 @@ export default {
 .rating-select {
   .rating-type {
     margin-top: 6px;
-    padding-top: 12px;
+    padding-top: 18px;
     padding-bottom: 18px;
     .block {
       font-size: 12px;

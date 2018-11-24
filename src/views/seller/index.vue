@@ -57,7 +57,7 @@
         <div class="pic-wrapper" ref="picWrapper">
           <ul ref="picList">
             <li class="pic-item" v-for="(pic,index) in seller.pics" :key="index">
-              <img :src="pic" alt="" style="height：90px;width:120px">
+              <img :src="pic" alt="" style="height:90px;width:120px">
             </li>
           </ul>
         </div>
@@ -101,29 +101,41 @@
   			value: this.favorite
   		});
   		this.favorite = this.$store.state.sellerFavorite;
+  	},
+  	mounted() {
   		this.$nextTick(() => {
-  			if (!this.sellerScroll) {
+        this.initSeller()
+        this.initPics()
+  		});
+  	},
+  	methods: {
+      initSeller(){
+        if (!this.sellerScroll) {
   				this.sellerScroll = new BScroll(this.$refs.seller, {
   					click: true
   				});
   			} else {
   				this.sellerScroll.refresh();
   			}
+      },
+  		initPics() {
   			let picWidth = 120;
   			let margin = 6;
   			let width = (picWidth + margin) * this.seller.pics.length - margin;
-  			this.$refs.picList.style.width = width + "px";
-  			if (!this.picScroll) {
+        this.$refs.picList.style.width = width + "px"
+        this.$nextTick(()=>{
+          if (!this.picScroll) {
   				this.picScroll = new BScroll(this.$refs.picWrapper, {
-  					click: true
+            scrollX: true,
+            click: true,
+            eventPassthrough: 'vertical'
   				});
   				console.log(2);
   			} else {
   				this.picScroll.refresh();
   			}
-  		});
-  	},
-  	methods: {
+        })
+  		},
   		toggleFavorite() {
   			this.favorite = !this.favorite;
   			this.$store.commit("saveToLocal", {
@@ -305,6 +317,7 @@
   				margin-bottom: 12px;
   			}
   			.desc-wrapper {
+  				font-size: 0;
   				.desc-item {
   					padding: 16px 12px;
   					font-size: 12px;
